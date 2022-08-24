@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { ModalStyled, ModalOverlay } from './Modal.styled';
 import { createPortal } from 'react-dom';
-import PropTypes from 'prop-types';
 
 export class Modal extends Component {
   componentDidMount() {
