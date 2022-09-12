@@ -1,37 +1,34 @@
-import React, { Component } from 'react';
+import React, { useEffect } from 'react';
 import { ModalStyled, ModalOverlay } from './Modal.styled';
 import { createPortal } from 'react-dom';
 
-export class Modal extends Component {
-  componentDidMount() {
-    window.addEventListener('keydown', this.handleKeydown);
-  }
+export function Modal({ chosenImg: { largeImageURL, tags }, onModalClose }) {
+  useEffect(() => {
+    window.addEventListener('keydown', handleKeydown);
 
-  componentWillUnmount() {
-    window.removeEventListener('keydown', this.handleKeydown);
-  }
+    return () => {
+      window.removeEventListener('keydown', handleKeydown);
+    };
+  });
 
-  handleKeydown = e => {
+  function handleKeydown(e) {
     if (e.code === 'Escape') {
-      this.props.onModalClose();
+      onModalClose();
     }
-  };
-
-  handleOverlayClick = e => {
-    if (e.target === e.currentTarget) {
-      this.props.onModalClose();
-    }
-  };
-
-  render() {
-    const { largeImageURL, tags } = this.props.chosenImg;
-    return createPortal(
-      <ModalOverlay onClick={this.handleOverlayClick}>
-        <ModalStyled>
-          <img src={largeImageURL} alt={tags} />
-        </ModalStyled>
-      </ModalOverlay>,
-      document.getElementById('modal-root')
-    );
   }
+
+  function handleOverlayClick(e) {
+    if (e.target === e.currentTarget) {
+      onModalClose();
+    }
+  }
+
+  return createPortal(
+    <ModalOverlay onClick={handleOverlayClick}>
+      <ModalStyled>
+        <img src={largeImageURL} alt={tags} />
+      </ModalStyled>
+    </ModalOverlay>,
+    document.getElementById('modal-root')
+  );
 }
