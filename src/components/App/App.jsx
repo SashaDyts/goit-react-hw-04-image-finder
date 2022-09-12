@@ -27,7 +27,7 @@ export function App() {
     fetchData();
 
     setIsLoading(true);
-  }, [query]);
+  }, [query, page]);
 
   function onSubmit(search) {
     setQuery(search);
